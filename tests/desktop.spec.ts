@@ -33,7 +33,7 @@ test.describe('Pulpit tests', () => {
     await desktopPage.closeButton.click();
 
     // Assert
-    await expect(desktopPage.showMessages).toHaveText(expected);
+    await expect(desktopPage.confirmationMessage).toHaveText(expected);
   });
 
   test('successful mobile top-up', async ({ page }) => {

@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { loginData } from '../test-data/login.data';
-import { assert } from 'console';
 import { LoginPage } from '../pages/login.page';
+import { PaymentPage } from '../test-data/payment.page';
 
 test.describe('Payment tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -24,25 +24,24 @@ test.describe('Payment tests', () => {
     const postalCodeAndCity = '26-610 Radom';
     const paymentAmount = '222';
     const paymentTitle = 'Zwrot';
-    const finalMessage = `Przelew wykonany! ${paymentAmount},00PLN dla ${transferReceiver}`;
+    const confirmationMessage = `Przelew wykonany! ${paymentAmount},00PLN dla ${transferReceiver}`;
 
     // Act
-    await page.locator('.grid-6').click();
-    await page.getByTestId('transfer_receiver').fill(transferReceiver);
-    await page.getByTestId('form_account_to').fill(toAccount);
-    await page.locator('.i-show').first().click();
-    await page
-      .getByRole('textbox', { name: 'ulica i numer domu /' })
-      .fill(street);
-    await page
-      .getByRole('textbox', { name: 'kod pocztowy, miejscowość' })
-      .fill(postalCodeAndCity);
-    await page.getByTestId('form_amount').fill(paymentAmount);
-    await page.getByTestId('form_title').fill(paymentTitle);
-    await page.getByRole('button', { name: 'wykonaj przelew' }).click();
-    await page.getByTestId('close-button').click();
+    const paymentPage = new PaymentPage(page);
+
+    await paymentPage.transferReceiver.fill(transferReceiver);
+    await paymentPage.toAccount.fill(toAccount);
+    await paymentPage.adressFields.first().click();
+    await paymentPage.streetAndNumber.fill(street);
+    await paymentPage.postalCodeAndCity.fill(postalCodeAndCity);
+    await paymentPage.paymentAmount.fill(paymentAmount);
+    await paymentPage.paymentTitle.fill(paymentTitle);
+    await paymentPage.confirmPaymentButton.click();
+    await paymentPage.closeButton.click();
 
     // Assert
-    await expect(page.locator('#show_messages')).toHaveText(finalMessage);
+    await expect(paymentPage.confirmationMessage).toHaveText(
+      confirmationMessage
+    );
   });
 });

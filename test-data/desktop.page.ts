@@ -7,7 +7,7 @@ export class DesktopPage {
   transferTitle: Locator;
   confirmPaymentButton: Locator;
   closeButton: Locator;
-  showMessages: Locator;
+  confirmationMessage: Locator;
 
   phoneNumber: Locator;
   topUpAmount: Locator;
@@ -25,7 +25,7 @@ export class DesktopPage {
       name: 'wykonaj',
     });
     this.closeButton = this.page.getByTestId('close-button');
-    this.showMessages = this.page.locator('#show_messages');
+    this.confirmationMessage = this.page.locator('#show_messages');
 
     this.phoneNumber = this.page.locator('#widget_1_topup_receiver');
     this.topUpAmount = this.page.locator('#widget_1_topup_amount');
