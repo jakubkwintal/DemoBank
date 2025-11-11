@@ -1,18 +1,22 @@
-import { Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
+import { SideMenuComponent } from '../components/side-menu.components';
 
 export class PaymentPage {
-  transferReceiver: any;
-  toAccount: any;
-  adressFields: any;
-  streetAndNumber: any;
-  postalCodeAndCity: any;
-  paymentAmount: any;
-  paymentTitle: any;
-  confirmPaymentButton: any;
-  closeButton: any;
-  confirmationMessage: any;
+  transferReceiver: Locator;
+  toAccount: Locator;
+  adressFields: Locator;
+  streetAndNumber: Locator;
+  postalCodeAndCity: Locator;
+  paymentAmount: Locator;
+  paymentTitle: Locator;
+  confirmPaymentButton: Locator;
+  closeButton: Locator;
+  confirmationMessage: Locator;
+  sideMenuComponent: SideMenuComponent;
 
   constructor(private page: Page) {
+    this.sideMenuComponent = new SideMenuComponent(this.page);
+
     this.transferReceiver = this.page.getByTestId('transfer_receiver');
     this.toAccount = this.page.getByTestId('form_account_to');
     this.adressFields = this.page.locator('.i-show');

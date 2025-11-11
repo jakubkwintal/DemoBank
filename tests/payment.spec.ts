@@ -13,7 +13,8 @@ test.describe('Payment tests', () => {
     await loginPage.loginInput.fill(userId);
     await loginPage.passwordInput.fill(userPassword);
     await loginPage.loginButton.click();
-    await page.getByRole('link', { name: 'płatności' }).click();
+    const paymentPage = new PaymentPage(page);
+    await paymentPage.sideMenuComponent.paymentModule.click();
   });
 
   test('simple payment', async ({ page }) => {
