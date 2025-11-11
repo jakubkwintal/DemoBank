@@ -52,7 +52,7 @@ test.describe('Pulpit tests', () => {
     await desktopPage.closeButton.click();
 
     // Assert
-    await expect(desktopPage.showMessages).toHaveText(expected);
+    await expect(desktopPage.confirmationMessage).toHaveText(expected);
   });
 
   test('correct balance after successful mobile top-up', async ({ page }) => {
