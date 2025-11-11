@@ -1,6 +1,7 @@
 import { Locator, Page } from '@playwright/test';
 
 export class DesktopPage {
+  userName: Locator;
   receiverId: Locator;
   transferAmount: Locator;
   transferTitle: Locator;
@@ -16,6 +17,7 @@ export class DesktopPage {
   moneyValue: Locator;
 
   constructor(private page: Page) {
+    this.userName = this.page.getByTestId('user-name');
     this.receiverId = this.page.locator('#widget_1_transfer_receiver');
     this.transferAmount = this.page.locator('#widget_1_transfer_amount');
     this.transferTitle = this.page.locator('#widget_1_transfer_title');

@@ -6,7 +6,7 @@ export class LoginPage {
   loginButton: Locator;
   loginError: Locator;
   passwordError: Locator;
-
+  
   constructor(private page: Page) {
     this.loginInput = this.page.getByTestId('login-input');
     this.passwordInput = this.page.getByTestId('password-input');
