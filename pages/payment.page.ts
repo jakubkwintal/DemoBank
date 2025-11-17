@@ -34,4 +34,23 @@ export class PaymentPage {
     this.closeButton = this.page.getByTestId('close-button');
     this.confirmationMessage = this.page.locator('#show_messages');
   }
+
+  async makeTransfer(
+    transferReceiver: string,
+    toAccount: string,
+    street: string,
+    postalCodeAndCity: string,
+    paymentAmount: string,
+    paymentTitle: string
+  ): Promise<void> {
+    await this.transferReceiver.fill(transferReceiver);
+    await this.toAccount.fill(toAccount);
+    await this.adressFields.first().click();
+    await this.streetAndNumber.fill(street);
+    await this.postalCodeAndCity.fill(postalCodeAndCity);
+    await this.paymentAmount.fill(paymentAmount);
+    await this.paymentTitle.fill(paymentTitle);
+    await this.confirmPaymentButton.click();
+    await this.closeButton.click();
+  }
 }

@@ -28,15 +28,14 @@ test.describe('Payment tests', () => {
     const confirmationMessage = `Przelew wykonany! ${paymentAmount},00PLN dla ${transferReceiver}`;
 
     // Act
-    await paymentPage.transferReceiver.fill(transferReceiver);
-    await paymentPage.toAccount.fill(toAccount);
-    await paymentPage.adressFields.first().click();
-    await paymentPage.streetAndNumber.fill(street);
-    await paymentPage.postalCodeAndCity.fill(postalCodeAndCity);
-    await paymentPage.paymentAmount.fill(paymentAmount);
-    await paymentPage.paymentTitle.fill(paymentTitle);
-    await paymentPage.confirmPaymentButton.click();
-    await paymentPage.closeButton.click();
+    await paymentPage.makeTransfer(
+      transferReceiver,
+      toAccount,
+      street,
+      postalCodeAndCity,
+      paymentAmount,
+      paymentTitle
+    );
 
     // Assert
     await expect(paymentPage.confirmationMessage).toHaveText(
