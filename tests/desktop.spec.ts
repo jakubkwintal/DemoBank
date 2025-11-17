@@ -1,18 +1,20 @@
 import { test, expect } from '@playwright/test';
 import { loginData } from '../test-data/login.data';
 import { LoginPage } from '../pages/login.page';
-import { DesktopPage } from '../test-data/desktop.page';
+import { DesktopPage } from '../pages/desktop.page';
 
 test.describe('Pulpit tests', () => {
+  let desktopPage: DesktopPage;
+
   test.beforeEach(async ({ page }) => {
     const userId = loginData.userId;
     const userPassword = loginData.userPassword;
 
     await page.goto('/');
     const loginPage = new LoginPage(page);
-    await loginPage.loginInput.fill(userId);
-    await loginPage.passwordInput.fill(userPassword);
-    await loginPage.loginButton.click();
+    await loginPage.login(userId, userPassword);
+
+    desktopPage = new DesktopPage(page);
   });
 
   test('quick payment with correct data', async ({ page }) => {
@@ -24,7 +26,6 @@ test.describe('Pulpit tests', () => {
     const expected = `Przelew wykonany! ${expectedTransferReceiver} - ${transferAmount},00PLN - ${transferTitle}`;
 
     // Act
-    const desktopPage = new DesktopPage(page);
     await desktopPage.receiverId.selectOption(receiverId);
     await desktopPage.transferAmount.fill(transferAmount);
     await desktopPage.transferTitle.fill(transferTitle);
@@ -43,8 +44,6 @@ test.describe('Pulpit tests', () => {
     const expected = `Doładowanie wykonane! ${amount},00PLN na numer ${phoneNumber}`;
 
     // Act
-    const desktopPage = new DesktopPage(page);
-
     await desktopPage.phoneNumber.selectOption(phoneNumber);
     await desktopPage.topUpAmount.fill(amount);
     await desktopPage.topUpAgreement.click();
@@ -63,7 +62,6 @@ test.describe('Pulpit tests', () => {
     const expectedBalance = Number(initialBalance) - Number(amount);
 
     // Act
-    const desktopPage = new DesktopPage(page);
     await desktopPage.phoneNumber.selectOption(phoneNumber);
     await desktopPage.topUpAmount.fill(amount);
     await desktopPage.topUpAgreement.click();
