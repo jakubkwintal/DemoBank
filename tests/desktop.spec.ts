@@ -19,7 +19,13 @@ test.describe('Pulpit tests', () => {
 
   test(
     'quick payment with correct data',
-    { tag: ['@desktop', '@integration'] },
+    {
+      tag: ['@desktop', '@integration'],
+      annotation: {
+        type: 'Documentation',
+        description: 'https://jaktestowac.pl/course/playwright-wprowadzenie/',
+      },
+    },
     async ({ page }) => {
       // Arrange
       const receiverId = '2';
@@ -36,36 +42,38 @@ test.describe('Pulpit tests', () => {
     }
   );
 
-  test('successful mobile top-up',
+  test(
+    'successful mobile top-up',
     { tag: ['@desktop', '@integration'] },
     async ({ page }) => {
-    // Arrange
-    const phoneNumber = '500 xxx xxx';
-    const amount = '50';
-    const expected = `Doładowanie wykonane! ${amount},00PLN na numer ${phoneNumber}`;
+      // Arrange
+      const phoneNumber = '500 xxx xxx';
+      const amount = '50';
+      const expected = `Doładowanie wykonane! ${amount},00PLN na numer ${phoneNumber}`;
 
-    // Act
-    await desktopPage.mobileTopUp(phoneNumber, amount);
+      // Act
+      await desktopPage.mobileTopUp(phoneNumber, amount);
 
-    // Assert
-    await expect(desktopPage.confirmationMessage).toHaveText(expected);
-  });
+      // Assert
+      await expect(desktopPage.confirmationMessage).toHaveText(expected);
+    }
+  );
 
-  test('correct balance after successful mobile top-up',
+  test(
+    'correct balance after successful mobile top-up',
     { tag: ['@desktop', '@integration'] },
-    async ({
-    page,
-  }) => {
-    // Arrange
-    const phoneNumber = '500 xxx xxx';
-    const amount = '75';
-    const initialBalance = await page.locator('#money_value').innerText();
-    const expectedBalance = Number(initialBalance) - Number(amount);
+    async ({ page }) => {
+      // Arrange
+      const phoneNumber = '500 xxx xxx';
+      const amount = '75';
+      const initialBalance = await page.locator('#money_value').innerText();
+      const expectedBalance = Number(initialBalance) - Number(amount);
 
-    // Act
-    await desktopPage.mobileTopUp(phoneNumber, amount);
+      // Act
+      await desktopPage.mobileTopUp(phoneNumber, amount);
 
-    // Assert
-    await expect(desktopPage.moneyValue).toHaveText(`${expectedBalance}`);
-  });
+      // Assert
+      await expect(desktopPage.moneyValue).toHaveText(`${expectedBalance}`);
+    }
+  );
 });
