@@ -17,44 +17,45 @@ test.describe('Pulpit tests', () => {
     desktopPage = new DesktopPage(page);
   });
 
-  test('quick payment with correct data', async ({ page }) => {
-    // Arrange
-    const receiverId = '2';
-    const transferAmount = '150';
-    const transferTitle = 'pizza';
-    const expectedTransferReceiver = 'Chuck Demobankowy';
-    const expected = `Przelew wykonany! ${expectedTransferReceiver} - ${transferAmount},00PLN - ${transferTitle}`;
+  test(
+    'quick payment with correct data',
+    { tag: ['@desktop', '@integration'] },
+    async ({ page }) => {
+      // Arrange
+      const receiverId = '2';
+      const transferAmount = '150';
+      const transferTitle = 'pizza';
+      const expectedTransferReceiver = 'Chuck Demobankowy';
+      const expected = `Przelew wykonany! ${expectedTransferReceiver} - ${transferAmount},00PLN - ${transferTitle}`;
 
-    // Act
-    await desktopPage.receiverId.selectOption(receiverId);
-    await desktopPage.transferAmount.fill(transferAmount);
-    await desktopPage.transferTitle.fill(transferTitle);
+      // Act
+      await desktopPage.quickPayment(receiverId, transferAmount, transferTitle);
 
-    await desktopPage.confirmPaymentButton.click();
-    await desktopPage.closeButton.click();
+      // Assert
+      await expect(desktopPage.confirmationMessage).toHaveText(expected);
+    }
+  );
 
-    // Assert
-    await expect(desktopPage.confirmationMessage).toHaveText(expected);
-  });
-
-  test('successful mobile top-up', async ({ page }) => {
+  test('successful mobile top-up',
+    { tag: ['@desktop', '@integration'] },
+    async ({ page }) => {
     // Arrange
     const phoneNumber = '500 xxx xxx';
     const amount = '50';
     const expected = `Doładowanie wykonane! ${amount},00PLN na numer ${phoneNumber}`;
 
     // Act
-    await desktopPage.phoneNumber.selectOption(phoneNumber);
-    await desktopPage.topUpAmount.fill(amount);
-    await desktopPage.topUpAgreement.click();
-    await desktopPage.confirmTopUpButton.click();
-    await desktopPage.closeButton.click();
+    await desktopPage.mobileTopUp(phoneNumber, amount);
 
     // Assert
     await expect(desktopPage.confirmationMessage).toHaveText(expected);
   });
 
-  test('correct balance after successful mobile top-up', async ({ page }) => {
+  test('correct balance after successful mobile top-up',
+    { tag: ['@desktop', '@integration'] },
+    async ({
+    page,
+  }) => {
     // Arrange
     const phoneNumber = '500 xxx xxx';
     const amount = '75';
@@ -62,11 +63,7 @@ test.describe('Pulpit tests', () => {
     const expectedBalance = Number(initialBalance) - Number(amount);
 
     // Act
-    await desktopPage.phoneNumber.selectOption(phoneNumber);
-    await desktopPage.topUpAmount.fill(amount);
-    await desktopPage.topUpAgreement.click();
-    await desktopPage.confirmTopUpButton.click();
-    await desktopPage.closeButton.click();
+    await desktopPage.mobileTopUp(phoneNumber, amount);
 
     // Assert
     await expect(desktopPage.moneyValue).toHaveText(`${expectedBalance}`);

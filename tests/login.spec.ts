@@ -10,21 +10,27 @@ test.describe('User login to Demobank', () => {
     await page.goto('/');
     loginPage = new LoginPage(page);
   });
-  test('successful login with correct credentials', async ({ page }) => {
-    // Arrange
-    const userId = loginData.userId;
-    const userPassword = loginData.userPassword;
-    const expectedUserName = 'Jan Demobankowy';
+  test(
+    'successful login with correct credentials',
+    { tag: ['@login', '@smoke'] },
+    async ({ page }) => {
+      // Arrange
+      const userId = loginData.userId;
+      const userPassword = loginData.userPassword;
+      const expectedUserName = 'Jan Demobankowy';
 
-    // Act
-    await loginPage.login(userId, userPassword);
+      // Act
+      await loginPage.login(userId, userPassword);
 
-    // Assert
-    const desktopPage = new DesktopPage(page);
-    await expect(desktopPage.userName).toHaveText(expectedUserName);
-  });
+      // Assert
+      const desktopPage = new DesktopPage(page);
+      await expect(desktopPage.userName).toHaveText(expectedUserName);
+    }
+  );
 
-  test('unsuccessful login with too short username', async ({ page }) => {
+  test('unsuccessful login with too short username', { tag: '@login' }, async ({
+    page,
+  }) => {
     // Arrange
 
     const incorrectUserId = 'tester';
@@ -40,7 +46,9 @@ test.describe('User login to Demobank', () => {
     await expect(loginPage.loginError).toHaveText(expectedMessage);
   });
 
-  test('unsuccessful login with too short password', async ({ page }) => {
+  test('unsuccessful login with too short password', { tag: '@login' }, async ({
+    page,
+  }) => {
     // Arrange
     const userId = loginData.userId;
     const incorrectUserPassword = '1234';

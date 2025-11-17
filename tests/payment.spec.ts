@@ -17,29 +17,33 @@ test.describe('Payment tests', () => {
     await paymentPage.sideMenuComponent.paymentModule.click();
   });
 
-  test('simple payment', async ({ page }) => {
-    // Arrange
-    const transferReceiver = 'Emilia Zawadzak';
-    const toAccount = '00 1122 3344 5566 7788 9911';
-    const street = 'Peryferyjna';
-    const postalCodeAndCity = '26-610 Radom';
-    const paymentAmount = '222';
-    const paymentTitle = 'Zwrot';
-    const confirmationMessage = `Przelew wykonany! ${paymentAmount},00PLN dla ${transferReceiver}`;
+  test(
+    'simple payment',
+    { tag: ['@payment', '@integration'] },
+    async ({ page }) => {
+      // Arrange
+      const transferReceiver = 'Emilia Zawadzak';
+      const toAccount = '00 1122 3344 5566 7788 9911';
+      const street = 'Peryferyjna';
+      const postalCodeAndCity = '26-610 Radom';
+      const paymentAmount = '222';
+      const paymentTitle = 'Zwrot';
+      const confirmationMessage = `Przelew wykonany! ${paymentAmount},00PLN dla ${transferReceiver}`;
 
-    // Act
-    await paymentPage.makeTransfer(
-      transferReceiver,
-      toAccount,
-      street,
-      postalCodeAndCity,
-      paymentAmount,
-      paymentTitle
-    );
+      // Act
+      await paymentPage.makeTransfer(
+        transferReceiver,
+        toAccount,
+        street,
+        postalCodeAndCity,
+        paymentAmount,
+        paymentTitle
+      );
 
-    // Assert
-    await expect(paymentPage.confirmationMessage).toHaveText(
-      confirmationMessage
-    );
-  });
+      // Assert
+      await expect(paymentPage.confirmationMessage).toHaveText(
+        confirmationMessage
+      );
+    }
+  );
 });

@@ -37,4 +37,25 @@ export class DesktopPage {
     });
     this.moneyValue = this.page.locator('#money_value');
   }
+
+  async quickPayment(
+    receiverId: string,
+    transferAmount: string,
+    transferTitle: string
+  ): Promise<void> {
+    await this.receiverId.selectOption(receiverId);
+    await this.transferAmount.fill(transferAmount);
+    await this.transferTitle.fill(transferTitle);
+
+    await this.confirmPaymentButton.click();
+    await this.closeButton.click();
+  }
+
+  async mobileTopUp(phoneNumber: string, amount: string): Promise<void> {
+    await this.phoneNumber.selectOption(phoneNumber);
+    await this.topUpAmount.fill(amount);
+    await this.topUpAgreement.click();
+    await this.confirmTopUpButton.click();
+    await this.closeButton.click();
+  }
 }
